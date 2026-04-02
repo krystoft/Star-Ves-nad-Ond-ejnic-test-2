@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stará Ves nad Ondřejnicí - Informační Portál</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* NAHRÁNÍ NOVÝCH FONTŮ */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,700&family=Montserrat:wght@300;400;600;800&display=swap');
+
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: #050505; 
+            color: #e5e7eb; 
+            margin: 0; 
+            scroll-behavior: smooth; 
+            font-weight: 300;
+        }
+
+        /* NÁDPISY: Cormorant Garamond */
+        h1, h2, h3, .font-serif { 
+            font-family: 'Cormorant Garamond', serif; 
+            letter-spacing: -1px;
+        }
+
+        #side-menu { position: fixed; top: 0; left: -350px; width: 320px; height: 100%; background: #0f0f0f; z-index: 2000; padding: 6rem 2rem; transition: 0.4s; border-right: 1px solid #333; }
+        #side-menu.open { left: 0; }
+        
+        .card { background-color: #111; padding: 1.5rem; border-radius: 1.5rem; border: 1px solid #222; cursor: pointer; transition: 0.3s; height: 100%; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-8px); border-color: #f59e0b; box-shadow: 0 15px 30px rgba(245, 158, 11, 0.1); }
+        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 1rem; margin-bottom: 1.2rem; }
+
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 3000; align-items: center; justify-content: center; padding: 1.5rem; backdrop-filter: blur(20px); }
+        .modal.open { display: flex; }
+        .modal-content { background: #0d0d0d; padding: 2.5rem; border-radius: 2rem; max-width: 850px; width: 100%; max-height: 90vh; overflow-y: auto; border: 1px solid #333; position: relative; }
+        
+        .highlight { color: #f59e0b; font-weight: 700; }
+        .close-btn { position: sticky; top: 0; float: right; font-size: 2.5rem; cursor: pointer; color: #555; line-height: 1; z-index: 10; font-family: sans-serif; }
+        .close-btn:hover { color: #f59e0b; }
+        
+        .menu-btn { cursor: pointer; z-index: 1500; position: fixed; top: 2rem; left: 2rem; background: #f59e0b; color: black; padding: 12px 28px; border-radius: 50px; font-weight: 800; box-shadow: 0 10px 20px rgba(0,0,0,0.4); text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; }
+        .action-btn { display: inline-flex; align-items: center; margin-top: 1rem; margin-right: 0.5rem; background: #f59e0b; color: black; padding: 10px 24px; border-radius: 12px; font-weight: 700; transition: 0.3s; text-decoration: none; font-size: 0.85rem; text-transform: uppercase; }
+        .action-btn:hover { transform: translateY(-2px); background: #fff; }
+        .address-tag { color: #f59e0b; font-size: 0.75rem; margin-bottom: 1rem; display: block; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
+        
+        p { line-height: 1.8; margin-bottom: 1.2rem; color: #ccc; }
+        .main-title { line-height: 0.8; }
+    </style>
+</head>
+<body>
+
+    <div class="menu-btn" onclick="toggleMenu()">☰ MENU</div>
+
+    <div id="side-menu">
+        <h2 class="text-4xl font-bold mb-10 text-white italic">Navigace</h2>
+        <nav class="space-y-6">
+            <a href="#" class="block text-xl hover:text-orange-500 transition font-serif italic" onclick="toggleMenu()">🏠 Domů</a>
+            <a href="#prozkoumat" class="block text-xl hover:text-orange-500 transition font-serif italic" onclick="toggleMenu()">🔍 Prozkoumat</a>
+            <a href="#kontakty" class="block text-xl hover:text-orange-500 transition font-serif italic" onclick="toggleMenu()">📞 Kontakty</a>
+        </nav>
+    </div>
+    <div id="overlay" class="fixed inset-0 bg-black/80 z-[1900] hidden" onclick="toggleMenu()"></div>
+
+    <header class="pt-48 pb-20 text-center">
+        <h1 class="text-8xl md:text-[12rem] font-bold text-white tracking-tighter main-title">Stará Ves</h1>
+        <p class="text-3xl text-orange-500 italic mt-2 font-serif">nad Ondřejnicí</p>
+    </header>
+
+    <main id="prozkoumat" class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 mb-40">
+        <div class="card" onclick="openModal('m-zamek')">
+            <img src="https://cdn.kudyznudy.cz/files/2b/2b406214-00fa-4b44-876c-44b809ce9b18.webp" alt="Zámek">
+            <h3 class="text-3xl font-bold mb-2">Renesanční zámek</h3>
+            <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Zámecká 1, Stará Ves n. O.</p>
+        </div>
+
+        <div class="card" onclick="openModal('m-kostel')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Star%C3%A1_ves_n.o.1-183738-716.jpg" alt="Kostel">
+            <h3 class="text-3xl font-bold mb-2">Kostel sv. Jana</h3>
+            <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Horní 125, Stará Ves n. O.</p>
+        </div>
+
+        <div class="card" onclick="openModal('m-priroda')">
+            <img src="https://www.pod.cz/atlas_toku/style/images/river/ondrejnice/foto12.jpg" alt="Ondřejnice">
+            <h3 class="text-3xl font-bold mb-2">Příroda a řeka</h3>
+            <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Okolí toku Ondřejnice</p>
+        </div>
+
+        <div class="card" onclick="openModal('m-glazarova')">
+            <img src="https://www.mesto-klimkovice.cz/data/editor/366cs_3.png" alt="Glazarová">
+            <h3 class="text-3xl font-bold mb-2">Jarmila Glazarová</h3>
+            <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Pamětní síň, Zámecká 1</p>
+        </div>
+
+        <div class="card" onclick="openModal('m-babky')">
+            <img src="https://d48-a.sdn.cz/d_48/c_img_QQ_L/1XFSy.jpeg" alt="Pizzerie">
+            <h3 class="text-3xl font-bold mb-2">Pizzerie U Babek</h3>
+            <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Zámecká 35, Stará Ves n. O.</p>
+        </div>
+
+        <div class="card" onclick="openModal('m-skola')">
+            <img src="https://archiv.zs-staravesno.eu/wp-content/uploads/2024/12/DSC_6279.jpg" alt="Škola">
+            <h3 class="text-3xl font-bold mb-2">ZŠ a MŠ</h3>
+            <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Zámecká 300, Stará Ves n. O.</p>
+        </div>
+
+        <div class="card" onclick="openModal('m-spolky')">
+            <img src="https://www.staraves.cz/image.php?nid=20935&oid=10367039&width=900" alt="Hasiči">
+            <h3 class="text-3xl font-bold mb-2">Sbor hasičů</h3>
+            <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Zámecká 16, Stará Ves n. O.</p>
+        </div>
+
+        <div class="card" onclick="openModal('m-utulek')">
+            <img src="https://d48-a.sdn.cz/d_48/c_img_G_C/covBBdo.jpeg" alt="Útulek">
+            <h3 class="text-3xl font-bold mb-2">Ochrana zvířat</h3>
+            <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Poddubí 152, Stará Ves n. O.</p>
+        </div>
+
+        <div class="card" onclick="openModal('m-historie')">
+            <img src="https://www.staraves.cz/image.php?nid=20935&oid=10205469&width=700" alt="Historie">
+            <h3 class="text-3xl font-bold mb-2">Historie obce</h3>
+            <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Kronika od roku 1267</p>
+        </div>
+    </main>
+
+    <div id="m-zamek" class="modal" onclick="closeAll()"><div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-btn" onclick="closeAll()">×</span>
+        <h2 class="text-5xl font-bold mb-2 highlight italic">Renesanční zámek</h2>
+        <span class="address-tag">📍 Zámecká 1, 739 25 Stará Ves nad Ondřejnicí</span>
+        <p>Zámek ve Staré Vsi nad Ondřejnicí patří k nejvýznamnějším renesančním památkám v regionu. Byl postaven v letech 1565–1570 Jarošem Syrakovským z Pěrkova na místě bývalé tvrze. Jeho největší pýchou je unikátní **sgrafitová výzdoba**, která pokrývá vnější fasády i vnitřní nádvoří.</p>
+        <p>Dnes zámek neslouží jen jako historický objekt, ale je pulzujícím centrem obce. Sídlí zde obecní úřad, probíhají tu svatební obřady a pořádají se pravidelné koncerty vážné hudby. Nádvoří zámku s arkádami nabízí neopakovatelnou atmosféru během letních Zámeckých slavností.</p>
+    </div></div>
+
+    <div id="m-babky" class="modal" onclick="closeAll()"><div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-btn" onclick="closeAll()">×</span>
+        <h2 class="text-5xl font-bold mb-2 highlight italic">Pizzerie U Babek</h2>
+        <span class="address-tag">📍 Zámecká 35, 739 25 Stará Ves nad Ondřejnicí</span>
+        <p>Pizzerie U Babek je oblíbeným místem setkávání generací. Nachází se v historické budově v bezprostřední blízkosti zámku a nabízí příjemné posezení v rustikálním interiéru i na letní zahrádce.</p>
+        <p>Kuchyně se zaměřuje na poctivé italské receptury, kde základem je těsto připravované podle tradičního postupu a čerstvé suroviny. Ideální zastávka pro cyklisty i rodiny po prohlídce zámku.</p>
+        <div class="flex flex-wrap gap-2">
+            <a href="tel:+420775406499" class="action-btn">📞 775 406 499</a>
+            <a href="https://ubabek.cz" target="_blank" class="action-btn">🌐 Web ubabek.cz</a>
+        </div>
+    </div></div>
+
+    <div id="m-skola" class="modal" onclick="closeAll()"><div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-btn" onclick="closeAll()">×</span>
+        <h2 class="text-5xl font-bold mb-2 highlight italic">ZŠ a MŠ J. Glazarové</h2>
+        <span class="address-tag">📍 Zámecká 300, 739 25 Stará Ves nad Ondřejnicí</span>
+        <p>Základní a mateřská škola ve Staré Vsi je moderní vzdělávací institucí, která klade důraz na rozvoj talentu každého dítěte. Škola disponuje špičkově vybavenými učebnami a rozsáhlým sportovním areálem.</p>
+    </div></div>
+
+    <div id="m-spolky" class="modal" onclick="closeAll()"><div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-btn" onclick="closeAll()">×</span>
+        <h2 class="text-5xl font-bold mb-2 highlight italic">Sbor dobrovolných hasičů</h2>
+        <span class="address-tag">📍 Zámecká 16, 739 25 Stará Ves nad Ondřejnicí</span>
+        <p>Sbor dobrovolných hasičů má tradici delší než jedno století. Kromě krizových situací a pomoci při živelných pohromách se hasiči starají o bohatý společenský život, pořádají plesy, soutěže v požárním sportu a letní slavnosti.</p>
+    </div></div>
+
+    <div id="m-kostel" class="modal" onclick="closeAll()"><div class="modal-content" onclick="event.stopPropagation()"><span class="close-btn" onclick="closeAll()">×</span><h2 class="text-5xl font-bold mb-2 highlight italic">Kostel sv. Jana</h2><span class="address-tag">📍 Horní 125, Stará Ves n. O.</span><p>Monumentální pozdně renesanční kostel vybudovaný v letech 1587–1591. Interiér skrývá vzácné barokní oltáře a historické varhany.</p></div></div>
+    <div id="m-priroda" class="modal" onclick="closeAll()"><div class="modal-content" onclick="event.stopPropagation()"><span class="close-btn" onclick="closeAll()">×</span><h2 class="text-5xl font-bold mb-2 highlight italic">Příroda a Ondřejnice</h2><span class="address-tag">📍 Údolí toku Ondřejnice</span><p>Obec je spojena s řekou Ondřejnicí, která tvoří přirozenou zelenou tepnu. Ideální místo pro relaxaci a napojení na cyklostezky CHKO Poodří.</p></div></div>
+    <div id="m-glazarova" class="modal" onclick="closeAll()"><div class="modal-content" onclick="event.stopPropagation()"><span class="close-btn" onclick="closeAll()">×</span><h2 class="text-5xl font-bold mb-2 highlight italic">Jarmila Glazarová</h2><span class="address-tag">📍 Pamětní síň, Zámecká 1</span><p>Národní umělkyně zde prožila dvanáct let života. V románu Roky v kruhu nesmazatelně zachytila život a tradice naší obce.</p></div></div>
+    <div id="m-utulek" class="modal" onclick="closeAll()"><div class="modal-content" onclick="event.stopPropagation()"><span class="close-btn" onclick="closeAll()">×</span><h2 class="text-5xl font-bold mb-2 highlight italic">Útulek pro psy</h2><span class="address-tag">📍 Poddubí 152, Stará Ves n. O.</span><p>Místo naděje pro opuštěná zvířata. Útulek zajišťuje profesionální péči a pomáhá pejskům najít nové domovy.</p></div></div>
+    <div id="m-historie" class="modal" onclick="closeAll()"><div class="modal-content" onclick="event.stopPropagation()"><span class="close-btn" onclick="closeAll()">×</span><h2 class="text-5xl font-bold mb-6 highlight italic">Historie a dědictví</h2><p>První písemná zmínka o obci pochází z roku 1267. Bohatá historie je znát na každém kroku – od zámku až po prastaré lípy u kostela.</p><a href="https://www.staraves.cz" target="_blank" class="action-btn">🏛️ Web staraves.cz</a></div></div>
+
+    <footer id="kontakty" class="max-w-7xl mx-auto px-6 py-20 border-t border-zinc-900 mt-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
+            <div>
+                <h4 class="text-4xl font-bold text-orange-500 mb-6 italic">Obecní úřad</h4>
+                <p class="text-xl text-gray-400 mb-4">Zámecká 1, 739 25 Stará Ves nad Ondřejnicí</p>
+                <div class="flex gap-4 mb-4">
+                    <a href="tel:+420558669201" class="text-gray-300 hover:text-orange-500 font-bold tracking-tighter">📞 558 669 201</a>
+                    <a href="mailto:posta@staraves.cz" class="text-gray-300 hover:text-orange-500 font-bold tracking-tighter">✉️ posta@staraves.cz</a>
+                </div>
+                <a href="https://www.staraves.cz" target="_blank" class="action-btn">🌐 Oficiální web obce</a>
+            </div>
+            <div class="flex flex-wrap gap-4 items-center justify-start md:justify-end">
+                <a href="https://www.google.com/maps/search/?api=1&query=Zámek+Stará+Ves+nad+Ondřejnicí" target="_blank" class="bg-zinc-800 px-6 py-3 rounded-full hover:bg-orange-500 transition font-bold text-xs uppercase tracking-widest">📍 Google Mapy</a>
+                <a href="https://maps.apple.com/?address=Zámecká%201,73925%20Stará%20Ves%20nad%20Ondřejnicí&q=Obecní%20úřad%20Stará%20Ves" target="_blank" class="bg-zinc-800 px-6 py-3 rounded-full hover:bg-orange-500 transition font-bold text-xs uppercase tracking-widest">🍎 Apple Mapy</a>
+            </div>
+        </div>
+        <p class="text-center text-[0.6rem] text-gray-800 tracking-[0.3em] uppercase">© 2026 Stará Ves nad Ondřejnicí | Designový informační portál</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('side-menu').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('hidden');
+        }
+        function openModal(id) {
+            const m = document.getElementById(id);
+            if(m) {
+                m.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        function closeAll() {
+            document.querySelectorAll('.modal').forEach(m => m.classList.remove('open'));
+            document.body.style.overflow = 'auto';
+        }
+    </script>
+</body>
+</html>
